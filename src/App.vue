@@ -1,11 +1,20 @@
 <script setup>
-
+import IzmenaPodataka from './components/IzmenaPodataka.vue';
+import Studenti from './components/Studenti.vue';
 </script>
 
 <template>
-  <h2>Ivan</h2>
+    <div style="display: flex;">
+        <div style="width: 25vw;">
+            <Studenti />
+        </div>
+        <div>
+            <IzmenaPodataka />
+        </div>
+    </div>
+
+    
 </template>
 
 <style scoped>
-
 </style>
