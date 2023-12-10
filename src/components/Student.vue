@@ -1,5 +1,5 @@
 <script setup>
-defineProps(["data"])
+const props = defineProps(["data"])
 </script>
 
 <template>
@@ -7,6 +7,8 @@ defineProps(["data"])
         <td>{{ data.ime }}</td>
         <td>{{ data.prezime }}</td>
         <td>{{ `${data.smer}-${data.broj}/${data.godinaUpisa}`.replace(' ','') }}</td>
+        <td><button @click="$emit('handleRequest', data, 'izmena')">Izmena</button></td>
+        <td><button @click="$emit('handleRequest', data, 'predmeti')">Prikazi predmete</button></td>
     </tr>
 </template>
 

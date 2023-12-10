@@ -1,22 +1,16 @@
 <script setup>
-import { onMounted, reactive, ref, watch, computed, provide } from 'vue';
+import { ref, computed } from 'vue';
 import Student from './Student.vue';
-import axios from 'axios'
 const kriterijumPretrage = ref("")
-const providedStudent = ref("a")
-provide("student", providedStudent)
-let inicijalniStudenti = ref([])
+defineEmits(["handleRequest"])
+const props = defineProps(["inicijalniStudenti"])
 
-onMounted(() => axios.get("http://pabp.viser.edu.rs:8000/api/Students").then(res => {
-    inicijalniStudenti.value = res.data
-}))
 
-const studenti = computed(()=>inicijalniStudenti.value.filter(student=>{
-    for(let studentKey in student){
-        if(student[studentKey].toString().toLowerCase().includes(String(kriterijumPretrage.value.toLowerCase())))return 1
+const studenti = computed(() => props.inicijalniStudenti.filter(student => {
+    for (let studentKey in student) {
+        if (student[studentKey] != null && student[studentKey].toString().toLowerCase().includes(String(kriterijumPretrage.value.toLowerCase()))) return 1
     }
 }))
-
 </script>
 
 <template>
@@ -29,7 +23,7 @@ const studenti = computed(()=>inicijalniStudenti.value.filter(student=>{
             <th>Broj indeksa</th>
         </thead>
         <tbody>
-            <Student v-for="podatak in studenti" :data="podatak" @click="console.log(podatak)" />
+            <Student v-for="student in studenti" :data="student" @handleRequest="(arg, req) => $emit('handleRequest', arg, req)" />
         </tbody>
     </table>
 </template>
@@ -40,4 +34,5 @@ th,
 td {
     border: 1px solid black;
     border-collapse: collapse;
-}</style>
+}
+</style>
