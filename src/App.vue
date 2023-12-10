@@ -3,23 +3,24 @@ import { reactive ,ref, onMounted} from 'vue';
 import IzmenaPodataka from './components/IzmenaPodataka.vue';
 import Studenti from './components/Studenti.vue';
 import axios from 'axios';
+import Predmeti from './components/Predmeti.vue';
 defineEmits(["handleRequest"])
+
 let inicijalniStudenti = ref([])
-function dohvatiPodatke() {
-    axios.get("http://pabp.viser.edu.rs:8000/api/Students").then(res => {
-        inicijalniStudenti.value = res.data
-    })
+const studentZaIzmenu = reactive({})
+const prikazPredmeta = reactive({})
+
+const dohvatiPodatke = ()=>{
+    axios.get("http://pabp.viser.edu.rs:8000/api/Students").then(res => inicijalniStudenti.value = res.data)
 }
 onMounted(() => dohvatiPodatke())
-const studentZaIzmenu = reactive({})
-const prikazi = ref(false)
 
-function handleRequest(vrednost, req){
-    prikazi.value = true
+
+const handleRequest = (vrednost, req)=>{
     if(req == 'izmena'){
         studentZaIzmenu.values = vrednost
     }else if(req == 'predmeti'){
-        console.log(req);
+        prikazPredmeta.values = vrednost
     }
 }
 </script>
@@ -31,6 +32,7 @@ function handleRequest(vrednost, req){
         </div>
         <div>
             <IzmenaPodataka :data=studentZaIzmenu @izmenaRefresh="() => dohvatiPodatke()"/>
+            <Predmeti :data=prikazPredmeta></Predmeti>
         </div>
     </div>
 
