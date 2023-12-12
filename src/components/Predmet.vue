@@ -1,14 +1,16 @@
 <script setup>
-const props = defineProps(["data"])
+const props = defineProps(["data","toggle"])
+
 </script>
 
 <template>
-    <tr>
+    <tr :style="props.data.ocena > 5 || props.toggle ? {} : {backgroundColor:'red'}">
         <td>{{ props.data.idPredmeta }}</td>
         <td>{{ props.data.idProfesora }}</td>
         <td>{{ props.data.naziv }}</td>
         <td>{{ props.data.espb }}</td>
         <td>{{ props.data.status }}</td>
+        <td><button @click="$emit('handlePredmet', data, 'brisanjePredmeta')">Obrisi</button></td>
     </tr>
 </template>
 

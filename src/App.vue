@@ -15,6 +15,7 @@ const prikazPredmeta = reactive({})
 
 
 const dohvatiPodatke = async () => {
+    
     let dohvaceniStudenti = await axios.get("http://pabp.viser.edu.rs:8000/api/Students")
     let dohvaceniZapisnik = await axios.get("http://pabp.viser.edu.rs:8000/api/Zapisniks")
     inicijalniStudenti.value = await dohvaceniStudenti.data

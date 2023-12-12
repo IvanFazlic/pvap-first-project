@@ -1,11 +1,10 @@
 <script setup>
-import { watch, ref } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps(["data", "podaciZapisnika"])
-const prosek = ref(0)
 
 
-watch(props, () => {
+const prosek = computed(()=>{
   let suma = 0
   let brojPolozenihIspita = 0
   if(props.podaciZapisnika.length > 0){
@@ -16,7 +15,7 @@ watch(props, () => {
       }
     });
   }
-  brojPolozenihIspita ? prosek.value = Number(suma/brojPolozenihIspita).toFixed(2) : prosek.value = "/"
+  return brojPolozenihIspita ? Number(suma/brojPolozenihIspita).toFixed(2) :  "/"
 })
 
 </script>
