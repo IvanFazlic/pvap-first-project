@@ -1,17 +1,17 @@
 <script setup>
-import { watch , ref ,toRef, reactive} from 'vue';
+import { watch, ref } from 'vue';
 import axios from 'axios';
 const props = defineProps(["data"])
 const emits = defineEmits(["izmenaRefresh"])
-
 let studentZaIzmenu = ref({})
+
+let identification = ref(-1)
 let ime = ref("")
 let prezime = ref("")
 let smer = ref("")
 let broj = ref("")
-let identification = ref(-1)
 
-function CleanUp(){
+const CleanUp = ()=> {
     identification.value = -1
     ime.value = undefined
     prezime.value = undefined
@@ -19,7 +19,7 @@ function CleanUp(){
     broj.value = undefined
 }
 
-watch(props,()=>{
+watch(props, () => {
     studentZaIzmenu = props.data.values
 
     identification.value = studentZaIzmenu.idStudenta
@@ -33,12 +33,13 @@ function izmeniStudenta() {
     studentZaIzmenu.prezime = prezime.value
     studentZaIzmenu.smer = smer.value
     studentZaIzmenu.broj = broj.value
-    if(studentZaIzmenu.id != -1){
-        axios.put(`http://pabp.viser.edu.rs:8000/api/Students/${identification.value}`,studentZaIzmenu).then(()=>{
+    if (studentZaIzmenu.id != -1) {
+        axios.put(`http://pabp.viser.edu.rs:8000/api/Students/${identification.value}`, studentZaIzmenu)
+        .then(() => {
             emits('izmenaRefresh')
-        }).catch((err)=>{
+        }).catch((err) => {
             alert(err)
-        }).finally(()=>{
+        }).finally(() => {
             CleanUp()
         })
     }
@@ -57,9 +58,8 @@ function izmeniStudenta() {
         <input type="text" id="lsmer" name="lsmer" v-model="smer"><br>
         <label for="lbroj">Broj:</label><br>
         <input type="text" id="lbroj" name="lbroj" v-model="broj"><br><br>
-        <input v-if="identification!=-1" type="submit" value="Submit" @click="izmeniStudenta()">
+        <input v-if="identification != -1" type="submit" value="Submit" @click="izmeniStudenta()">
     </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

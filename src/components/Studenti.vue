@@ -1,16 +1,21 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import Student from './Student.vue';
-const kriterijumPretrage = ref("")
 defineEmits(["handleRequest"])
-const props = defineProps(["inicijalniStudenti"])
+const props = defineProps(["inicijalniStudenti", "podaciZapisnika"])
+const kriterijumPretrage = ref("")
 
-
-const studenti = computed(() => props.inicijalniStudenti.filter(student => {
-    for (let studentKey in student) {
-        if (student[studentKey] != null && student[studentKey].toString().toLowerCase().includes(String(kriterijumPretrage.value.toLowerCase()))) return 1
-    }
-}))
+const studenti = computed(() => {
+    return props.inicijalniStudenti.filter(student => {
+        for (let studentKey in student) {
+            if (student[studentKey] != null && student[studentKey]
+                .toString()
+                .toLowerCase()
+                .includes(String(kriterijumPretrage.value.toLowerCase()))) return 1
+        }
+    })
+}
+)
 </script>
 
 <template>
@@ -21,9 +26,11 @@ const studenti = computed(() => props.inicijalniStudenti.filter(student => {
             <th>Ime</th>
             <th>Prezime</th>
             <th>Broj indeksa</th>
+            <th>Prosek</th>
         </thead>
         <tbody>
-            <Student v-for="student in studenti" :data="student" @handleRequest="(arg, req) => $emit('handleRequest', arg, req)" />
+            <Student v-for="student in studenti" :data="student" :podaciZapisnika="props.podaciZapisnika"
+                @handleRequest="(arg, req) => $emit('handleRequest', arg, req)" />
         </tbody>
     </table>
 </template>

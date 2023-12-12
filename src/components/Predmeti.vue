@@ -1,30 +1,34 @@
 <script setup>
-import { reactive, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import axios from 'axios';
 import Predmet from './Predmet.vue'
+
 const props = defineProps(["data"])
+
 let sviPredmeti = ref([])
 let predmetiStudenta = ref([])
 let predmeti = ref([])
 
 const dohvatiPredmeteStudenta = async () => {
-    const filtriraniStudenti = await axios.get(`http://pabp.viser.edu.rs:8000/api/StudentPredmets`)
-    predmetiStudenta.value = await filtriraniStudenti.data.filter(predmet => predmet.idStudenta == props.data.values.idStudenta)
-    const sviPredmeti = await axios.get(`http://pabp.viser.edu.rs:8000/api/Predmets`)
-    sviPredmeti.value = await sviPredmeti.data
+    const dohvatiFiltriraneStudente = await axios.get(`http://pabp.viser.edu.rs:8000/api/StudentPredmets`)
+    const dohvatiPredmete = await axios.get(`http://pabp.viser.edu.rs:8000/api/Predmets`)
 
-    predmeti.value = sviPredmeti.value.filter(objekat2 =>
-        predmetiStudenta.value.some(objekat1 => objekat1.idPredmeta === objekat2.idPredmeta)
+    predmetiStudenta.value = await dohvatiFiltriraneStudente.data.filter(predmet => predmet.idStudenta == props.data.values.idStudenta)
+    sviPredmeti.value = await dohvatiPredmete.data
+
+    predmeti.value = sviPredmeti.value.filter(p1 =>
+        predmetiStudenta.value.some(p2 => p2.idPredmeta === p1.idPredmeta)
     );
 }
+
 watch(props, () => {
     dohvatiPredmeteStudenta()
 })
 </script>
 
 <template>
-    <div v-if="predmetiStudenta.length">
-        <h2>Predmeti</h2>
+    <div v-if="props.data.values">
+        <h2>Predmeti studenta {{ props.data.values.ime }} {{ props.data.values.prezime }}</h2>
         <table>
         <thead>
             <th>ID predmeta</th>
@@ -41,6 +45,10 @@ watch(props, () => {
 </template>
 
 <style scoped>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
 table{
     text-align: center;
 }

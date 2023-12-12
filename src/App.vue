@@ -1,46 +1,57 @@
 <script setup>
-import { reactive ,ref, onMounted} from 'vue';
+import { reactive, ref, onMounted } from 'vue';
 import IzmenaPodataka from './components/IzmenaPodataka.vue';
 import Studenti from './components/Studenti.vue';
 import axios from 'axios';
 import Predmeti from './components/Predmeti.vue';
+
 defineEmits(["handleRequest"])
 
 let inicijalniStudenti = ref([])
+let podaciZapisnika = ref([])
+
 const studentZaIzmenu = reactive({})
 const prikazPredmeta = reactive({})
 
-const dohvatiPodatke = ()=>{
-    axios.get("http://pabp.viser.edu.rs:8000/api/Students").then(res => inicijalniStudenti.value = res.data)
+
+const dohvatiPodatke = async () => {
+    let dohvaceniStudenti = await axios.get("http://pabp.viser.edu.rs:8000/api/Students")
+    let dohvaceniZapisnik = await axios.get("http://pabp.viser.edu.rs:8000/api/Zapisniks")
+    inicijalniStudenti.value = await dohvaceniStudenti.data
+    podaciZapisnika.value = await dohvaceniZapisnik.data
 }
-onMounted(() => dohvatiPodatke())
 
-
-const handleRequest = (vrednost, req)=>{
-    if(req == 'izmena'){
+const handleRequest = (vrednost, req) => {
+    if (req == 'izmena') {
         studentZaIzmenu.values = vrednost
-    }else if(req == 'predmeti'){
+    } else if (req == 'predmeti') {
         prikazPredmeta.values = vrednost
     }
 }
+
+
+onMounted(() => dohvatiPodatke())
 </script>
 
 <template>
-    <div style="display: flex;">
+    <div class="diplayFlex">
         <div class="studenti">
-            <Studenti :inicijalniStudenti="inicijalniStudenti" @handleRequest = '(arg, req) => handleRequest(arg, req)' ></Studenti>
+            <Studenti v-if="!prikazPredmeta.values" :inicijalniStudenti="inicijalniStudenti" :podaciZapisnika="podaciZapisnika"
+                @handleRequest='(arg, req) => handleRequest(arg, req)' />
         </div>
         <div>
-            <IzmenaPodataka :data=studentZaIzmenu @izmenaRefresh="() => dohvatiPodatke()"/>
+            <IzmenaPodataka v-if="!prikazPredmeta.values" :data=studentZaIzmenu @izmenaRefresh="() => dohvatiPodatke()" />
             <Predmeti :data=prikazPredmeta></Predmeti>
         </div>
     </div>
-
-    
 </template>
 
 <style scoped>
-.studenti{
+.diplayFlex {
+    display: flex;
+}
+
+.studenti {
     width: 30vw;
 }
 </style>

@@ -13,4 +13,11 @@ const props = defineProps(["data"])
 </template>
 
 <style scoped>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+button:hover{
+    cursor: pointer;
+}
 </style>
