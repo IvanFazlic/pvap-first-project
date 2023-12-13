@@ -28,6 +28,7 @@ const handleRequest = (vrednost, req) => {
         showIzmeni.value = true
         studentZaIzmenu.values = vrednost
     } else if (req == 'predmeti') {
+        showIzmeni.value = false
         prikazPredmeta.values = vrednost
     }
 }

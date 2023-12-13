@@ -21,6 +21,25 @@ body{
   margin: 0;
   padding: 3px;
 }
+.brisanje{
+  transition: 300ms;
+  background-color:red;
+  border: 0;
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+  padding: 3px 5px;
+}
+.brisanje:hover{
+  transition: 300ms;
+  background-color:red;
+  border: 0;
+  color: white;
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+  padding: 3px 5px;
+}
 .tr-hover:hover{
   transition: 300ms;
   background-color: aqua;
@@ -42,4 +61,38 @@ body{
   width: 100%;
   margin: 0;
   padding: 3px;
+}
+.dodaj{
+  transition: 300ms;
+  background-color:yellow;
+  border: 0;
+  cursor: pointer;
+  padding: 5px 20px;
+  border-radius: 5px;
+}
+.dodaj:hover{
+  transition: 300ms;
+  background-color:yellow;
+  border: 0;
+  color: white;
+  cursor: pointer;
+  padding: 5px 20px;
+  border-radius: 5px;
+}
+.zapisnik{
+  transition: 300ms;
+  background-color:rgb(7, 195, 63);
+  border: 0;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.zapisnik:hover{
+  transition: 300ms;
+  background-color:rgb(7, 195, 63);
+  border: 0;
+  color: white;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
 }

@@ -108,8 +108,8 @@ const dodajPredmete = () => {
             <option v-for="p in predmetiZaDodavanje" :value="p">{{ p.naziv }}</option>
         </select>
         <br><br>
-        <button @click="dodajPredmete">Dodaj</button>
-        <button @click="toggle = !toggle">Prikazi zapisnik</button>
+        <button @click="dodajPredmete" class="dodaj">Dodaj</button>
+        <button @click="toggle = !toggle" class="zapisnik">Prikazi zapisnik</button>
     </div>
     <div>
 
