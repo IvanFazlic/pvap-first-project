@@ -4,7 +4,6 @@ import axios from 'axios';
 import Predmet from './Predmet.vue'
 
 const toggle = ref(true)
-const emits = defineEmits([""])
 const props = defineProps(["data"])
 
 let sviPredmeti = ref([])
@@ -46,10 +45,6 @@ const dohvatiPredmeteStudenta = async () => {
         const matchingObj = predmetiZapisnika.value.find(obj2 => obj1.idPredmeta === obj2.idPredmeta);
         return { ...obj1, ...matchingObj }
     })
-
-    
-    console.log(predmetiZaDodavanje.value);
-
 }
 const obrisiPredmet = (idStudenta, idPredmeta) => {
     axios.delete(`http://pabp.viser.edu.rs:8000/api/StudentPredmets/${idStudenta}/${idPredmeta}`)
@@ -70,19 +65,23 @@ watch(props, () => {
 })
 
 //Napraviti da ucita ponovo
-const dodajPredmete= ()=>{
-    let predmeti = predmetiZaDodavanje.value.filter(p1 => 
-        dodavanje.value.some(p2 =>p2.idPredmeta == p1.idPredmeta)
+const dodajPredmete = () => {
+    let predmeti = predmetiZaDodavanje.value.filter(p1 =>
+        dodavanje.value.some(p2 => p2.idPredmeta == p1.idPredmeta)
     )
     predmeti.forEach(element => {
         let elementZaSlanje = {
-            "idStudenta" :props.data.values.idStudenta,
-            "idPredmeta" :element.idPredmeta,
-            "skolskaGodina" : `${new Date().getFullYear()}/${(new Date().getFullYear() + 1).toString().slice(-2)}`
+            "idStudenta": props.data.values.idStudenta,
+            "idPredmeta": element.idPredmeta,
+            "skolskaGodina": `${new Date().getFullYear()}/${(new Date().getFullYear() + 1).toString().slice(-2)}`
         }
-        axios.post(`http://pabp.viser.edu.rs:8000/api/StudentPredmets`,elementZaSlanje).then((res)=>{
-            dohvatiPredmeteStudenta()
-        })
+        axios.post(`http://pabp.viser.edu.rs:8000/api/StudentPredmets`, elementZaSlanje)
+            .then(() => {
+                alert(`Dodat predmet "${element.naziv}" studentu "${props.data.values.ime}"`)
+            })
+            .finally(() => {
+                dohvatiPredmeteStudenta()
+            })
     });
 }
 

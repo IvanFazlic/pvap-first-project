@@ -21,13 +21,13 @@ const prosek = computed(()=>{
 </script>
 
 <template>
-  <tr>
+  <tr class="tr-hover">
     <td>{{ data.ime }}</td>
     <td>{{ data.prezime }}</td>
     <td>{{ `${data.smer}-${data.broj}/${data.godinaUpisa}`.replace(' ', '') }}</td>
     <td>{{ prosek }}</td>
-    <td><button @click="$emit('handleRequest', data, 'izmena')">Izmena</button></td>
-    <td><button @click="$emit('handleRequest', data, 'predmeti')">Prikazi predmete</button></td>
+    <td><button @click="$emit('handleRequest', data, 'izmena')" class="izmena">Izmena</button></td>
+    <td><button @click="$emit('handleRequest', data, 'predmeti')" class="prikaziPredmete">Prikazi predmete</button></td>
   </tr>
 </template>
 
@@ -40,6 +40,6 @@ td {
 }
 
 tr:hover {
-  background-color: aqua;
+  
 }
 </style>

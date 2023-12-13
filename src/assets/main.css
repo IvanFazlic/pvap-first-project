@@ -1,35 +1,45 @@
-@import './base.css';
-
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+body{
+  background: #1488CC;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2B32B2, #1488CC);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2B32B2, #1488CC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+.izmena{
+  transition: 300ms;
+  background-color:lightcoral;
+  border: 0;
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+  padding: 3px;
 }
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.izmena:hover{
+  transition: 300ms;
+  background-color:rgb(245, 162, 162);
+  border: 0;
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+  padding: 3px;
 }
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.tr-hover:hover{
+  transition: 300ms;
+  background-color: aqua;
+}
+.prikaziPredmete{
+  transition: 300ms;
+  background-color:rgb(7, 184, 7);
+  border: 0;
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+  padding: 3px;
+}
+.prikaziPredmete:hover{
+  transition: 300ms;
+  background-color:rgb(109, 245, 109);;
+  border: 0;
+  cursor: pointer;
+  width: 100%;
+  margin: 0;
+  padding: 3px;
 }
