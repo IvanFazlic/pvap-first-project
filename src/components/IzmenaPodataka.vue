@@ -58,7 +58,7 @@ function izmeniStudenta() {
         <input type="text" id="lsmer" name="lsmer" v-model="smer"><br>
         <label for="lbroj">Broj:</label><br>
         <input type="text" id="lbroj" name="lbroj" v-model="broj"><br><br>
-        <input v-if="identification != -1" type="submit" value="Submit" @click="izmeniStudenta()">
+        <input v-if="identification != -1" type="submit" value="Izmeni" @click="izmeniStudenta()">
     </div>
 </template>
 

@@ -12,7 +12,7 @@ let podaciZapisnika = ref([])
 
 const studentZaIzmenu = reactive({})
 const prikazPredmeta = reactive({})
-
+const showIzmeni = ref(false)
 
 const dohvatiPodatke = async () => {
     
@@ -20,10 +20,12 @@ const dohvatiPodatke = async () => {
     let dohvaceniZapisnik = await axios.get("http://pabp.viser.edu.rs:8000/api/Zapisniks")
     inicijalniStudenti.value = await dohvaceniStudenti.data
     podaciZapisnika.value = await dohvaceniZapisnik.data
+    showIzmeni.value = false
 }
 
 const handleRequest = (vrednost, req) => {
     if (req == 'izmena') {
+        showIzmeni.value = true
         studentZaIzmenu.values = vrednost
     } else if (req == 'predmeti') {
         prikazPredmeta.values = vrednost
@@ -41,7 +43,7 @@ onMounted(() => dohvatiPodatke())
                 @handleRequest='(arg, req) => handleRequest(arg, req)' />
         </div>
         <div>
-            <IzmenaPodataka v-if="!prikazPredmeta.values" :data=studentZaIzmenu @izmenaRefresh="() => dohvatiPodatke()" />
+            <IzmenaPodataka v-show="showIzmeni" :data=studentZaIzmenu @izmenaRefresh="() => dohvatiPodatke()" />
             <Predmeti :data=prikazPredmeta></Predmeti>
         </div>
     </div>
