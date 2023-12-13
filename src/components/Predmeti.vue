@@ -4,32 +4,39 @@ import axios from 'axios';
 import Predmet from './Predmet.vue'
 
 const toggle = ref(true)
+const emits = defineEmits([""])
 const props = defineProps(["data"])
 
 let sviPredmeti = ref([])
 let predmetiStudenta = ref([])
 let ispitiStudenta = ref([])
 let zapisnikStudenta = ref([])
+let rokovi = ref([])
+let dodavanje = ref([])
 
 let predmeti = ref([])
 let predmetiZapisnika = ref([])
-let test = ref([])
+let predmetiZaDodavanje = ref([])
 
 const dohvatiPredmeteStudenta = async () => {
     const dohvatiFiltriraneStudente = await axios.get(`http://pabp.viser.edu.rs:8000/api/StudentPredmets`)
     const dohvatiPredmete = await axios.get(`http://pabp.viser.edu.rs:8000/api/Predmets`)
     const dohvatiZapisnik = await axios.get(`http://pabp.viser.edu.rs:8000/api/Zapisniks`)
     const dohvatiIspite = await axios.get(`http://pabp.viser.edu.rs:8000/api/Ispits`)
+    const dohvatiRokove = await axios.get(`http://pabp.viser.edu.rs:8000/api/IspitniRoks`)
 
     predmetiStudenta.value = await dohvatiFiltriraneStudente.data.filter(predmet => predmet.idStudenta == props.data.values.idStudenta)
     zapisnikStudenta.value = await dohvatiZapisnik.data.filter(zapisnik => zapisnik.idStudenta == props.data.values.idStudenta)
     ispitiStudenta.value = await dohvatiIspite.data
     sviPredmeti.value = await dohvatiPredmete.data
+    rokovi.value = await dohvatiRokove.data
 
     predmeti.value = sviPredmeti.value.filter(p1 =>
         predmetiStudenta.value.some(p2 => p2.idPredmeta === p1.idPredmeta)
     );
-
+    predmetiZaDodavanje.value = sviPredmeti.value.filter(p1 =>
+        !predmetiStudenta.value.some(p2 => p2.idPredmeta === p1.idPredmeta)
+    )
     predmetiZapisnika.value = zapisnikStudenta.value.map(obj1 => {
         const matchingObj = ispitiStudenta.value.find(obj2 => obj1.idIspita === obj2.idIspita);
         return { ...obj1, ...matchingObj }
@@ -39,7 +46,9 @@ const dohvatiPredmeteStudenta = async () => {
         const matchingObj = predmetiZapisnika.value.find(obj2 => obj1.idPredmeta === obj2.idPredmeta);
         return { ...obj1, ...matchingObj }
     })
-    console.log(predmeti.value);
+
+    
+    console.log(predmetiZaDodavanje.value);
 
 }
 const obrisiPredmet = (idStudenta, idPredmeta) => {
@@ -59,6 +68,24 @@ const handlePredmet = (arg, req) => {
 watch(props, () => {
     dohvatiPredmeteStudenta()
 })
+
+//Napraviti da ucita ponovo
+const dodajPredmete= ()=>{
+    let predmeti = predmetiZaDodavanje.value.filter(p1 => 
+        dodavanje.value.some(p2 =>p2.idPredmeta == p1.idPredmeta)
+    )
+    predmeti.forEach(element => {
+        let elementZaSlanje = {
+            "idStudenta" :props.data.values.idStudenta,
+            "idPredmeta" :element.idPredmeta,
+            "skolskaGodina" : `${new Date().getFullYear()}/${(new Date().getFullYear() + 1).toString().slice(-2)}`
+        }
+        axios.post(`http://pabp.viser.edu.rs:8000/api/StudentPredmets`,elementZaSlanje).then((res)=>{
+            dohvatiPredmeteStudenta()
+        })
+    });
+}
+
 </script>
 
 <template>
@@ -78,7 +105,11 @@ watch(props, () => {
             </tbody>
         </table>
         <br>
-        <button>Dodaj</button>
+        <select name="cars" id="cars" v-model="dodavanje" multiple>
+            <option v-for="p in predmetiZaDodavanje" :value="p">{{ p.naziv }}</option>
+        </select>
+        <br><br>
+        <button @click="dodajPredmete">Dodaj</button>
         <button @click="toggle = !toggle">Prikazi zapisnik</button>
     </div>
     <div>
