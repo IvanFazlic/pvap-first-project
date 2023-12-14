@@ -66,6 +66,10 @@ watch(props, () => {
 
 //Napraviti da ucita ponovo
 const dodajPredmete = () => {
+    if(dodavanje.value.length <= 0){
+        alert("Nista dodali predmet.")
+        return
+    }
     let predmeti = predmetiZaDodavanje.value.filter(p1 =>
         dodavanje.value.some(p2 => p2.idPredmeta == p1.idPredmeta)
     )
@@ -81,8 +85,10 @@ const dodajPredmete = () => {
             })
             .finally(() => {
                 dohvatiPredmeteStudenta()
+                dodavanje.value = []
             })
     });
+    dodavanje.value = []
 }
 
 </script>
